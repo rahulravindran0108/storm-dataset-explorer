@@ -6,21 +6,44 @@ library(rCharts)
 library(reshape2)
 library(markdown)
 library(mapproj)
+library(dplyr)
 
 states_map <- map_data("state")
 dt <- fread('data/events.agg.csv')
 dt$EVTYPE <- tolower(dt$EVTYPE)
 evtypes <<- sort(unique(dt$EVTYPE))
+tmp <- merge(
+  data.table(STATE=sort(unique(dt$STATE))),
+  dt[
+    YEAR >= 1950 & YEAR <= 2011,
+    list(
+      COUNT=sum(COUNT),
+      INJURIES=sum(INJURIES),
+      FATALITIES=sum(FATALITIES),
+      PROPDMG=round(sum(PROPDMG), 2),
+      CROPDMG=round(sum(CROPDMG), 2)
+    ),
+    by=list(STATE)],
+  by=c('STATE'), all=TRUE
+)
 
-
+states <- unique(dt$STATE)
 
 shinyServer(function(input, output) {
-
+  
+  gray.colors <- function(n) gray(rev(0:(n - 1))/n)
+  defaultColors <- gray.colors(50)
+  #defaultColors <- c("#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477")
+  series <- structure(
+    lapply(defaultColors, function(color) { list(color=color) }),
+    names = states
+  )
+  
     dt.agg <- reactive({
         tmp <- merge(
             data.table(STATE=sort(unique(dt$STATE))),
             dt[
-                YEAR >= input$range[1] & YEAR <= input$range[2] & EVTYPE %in% input$evtypes,
+                YEAR >= input$range[1] & YEAR <= input$range[2],
                 list(
                     COUNT=sum(COUNT),
                     INJURIES=sum(INJURIES),
@@ -37,7 +60,7 @@ shinyServer(function(input, output) {
     
     dt.agg.year <- reactive({
         dt[
-            YEAR >= input$range[1] & YEAR <= input$range[2] & EVTYPE %in% input$evtypes,
+            YEAR >= input$range[1] & YEAR <= input$range[2],
             list(
                 COUNT=sum(COUNT),
                 INJURIES=sum(INJURIES),
@@ -87,11 +110,11 @@ shinyServer(function(input, output) {
         print(p)
     })
     
-    output$evtypeControls <- renderUI({
-        if(1) {
-            checkboxGroupInput('evtypes', 'Event types', evtypes, selected=evtypes)
-        }
-    })
+    #output$evtypeControls <- renderUI({
+    #    if(1) {
+    #        checkboxGroupInput('evtypes', 'Event types', evtypes, selected=evtypes)
+    #    }
+    #})
     
     dataTable <- reactive({
         dt.agg()[, list(
@@ -122,6 +145,44 @@ shinyServer(function(input, output) {
         eventsByYear$xAxis( axisLabel = "Year", width = 70)
         return(eventsByYear)
     })
+    
+  yearData <- reactive({
+    # Filter to the desired year, and put the columns
+    # in the order that Google's Bubble Chart expects
+    # them (name, x, y, color, size). Also sort by region
+    # so that Google Charts orders and colors the regions
+    # consistently.
+    dt$STATE<-as.factor(dt$STATE)
+    dt$Affected<-dt$FATALITIES+dt$INJURIES+dt$PROPDMG
+    df <- dt %>%
+      filter(YEAR == as.integer(input$year)) %>%
+      select(EVTYPE,COUNT,Affected,STATE,INJURIES) %>%
+      arrange(STATE)
+      
+  })
+  
+    output$chart <- reactive({
+      # Return the data and options
+      list(
+        data = googleDataTable(yearData()),
+        options = list(
+          title = sprintf(
+            "Number of events vs Total Damages, %s",
+            input$year),
+          series = series
+        )
+      )
+    })
+  
+  output$image1<-renderUI({
+    
+    img(src = "1.png")
+    
+  })
+  
+  output$image2<-renderUI({
+    img(src = "2.png")
+  })
     
     output$populationImpact <- renderChart({
         data <- melt(

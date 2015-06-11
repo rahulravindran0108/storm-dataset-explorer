@@ -2,6 +2,8 @@
 
 This application is based on the U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database.
 
-Source code is available on the [GitHub](https://github.com/rahulravindran0108/storm-dataset-explorer).
+Over the years, US has been hit by many calamities viz Floods, drought, Thunder, Tornado, Hurricanes etc. This application tells a story as to what events have caused the most damage to the respective states. We will find out what events have caused fatalities and what have caused property damage through interactive graphs and timelines.
 
-You can adjust date range and event types using control panel located on the left side. Filtered dataset can be downloaded using data tab.
+Let's see what the data has to say in terms of 
+- State
+- Yearly Damages
