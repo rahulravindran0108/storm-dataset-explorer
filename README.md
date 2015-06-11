@@ -68,7 +68,7 @@ Following the feedback from the 3 interviews, I implemented the following change
 - Kept minimalistic work for the user.
 
 ### Redesigning based on the feedback
-Previous Application can be found here:
+Previous Application can be found here: [Previous Application](https://rahulravindran.shinyapps.io/assignment/)
 
 Following were the changes done to the visual elements:
 
