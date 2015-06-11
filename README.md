@@ -38,17 +38,23 @@ Following are the comments from interviews conducted
 ### Interview 1
 
 > so when I had a look at the website you gave me, I did not undertand what I should do?
+>
 > Include some kind of about page so that it becomes intuitive what I shpuld be doing.
-> I liked the map feature, simple and clean. Include a bit more content and remove the tabs, I kind of got disoriented
+>
+> I liked the map feature, simple and clean. Include a bit more content and remove the tabs, I kind of got disoriented.
 
 ### Interview 2
 > graphs look good, not very intuitive any connection between by state and by year?
-> can't compare both the maps, please stack them side by side
-> You seem to make me work more to see what I want, rather explain it to me and make it a good read
+>
+> can't compare both the maps, please stack them side by side.
+>
+> You seem to make me work more to see what I want, rather explain it to me and make it a good read.
 
 ### Interview 3
-> Too many elements stacked, can't understand what is what
-> Connect the two tabs to tell a single story please, it doesn't look good in tabs
+> Too many elements stacked, can't understand what is what?
+>
+> Connect the two tabs to tell a single story please, it doesn't look good in tabs.
+>
 > Explain the data from maps, also I wanted to know what event is causing the most damage. Please include that
 
 ### Post-feedback Design
@@ -71,8 +77,9 @@ Following were the changes done to the visual elements:
 - Placed both the chloroplehts side by side to perform a comaprison between the two.
 - Following two graphs were added:
 
-![First Analysis](https://raw.githubusercontent.com/rahulravindran0108/storm-dataset-explorer/tree/master/www/1.png)
-![second Analysis](https://raw.githubusercontent.com/rahulravindran0108/storm-dataset-explorer/tree/master/www/1.png)
+![First Analysis](https://raw.github.com/rahulravindran0108/storm-dataset-explorer/master/www/1.png)
+
+![second Analysis](https://raw.github.com/rahulravindran0108/storm-dataset-explorer/master/www/2.png)
 
 ## References
 
